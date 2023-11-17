@@ -1,3 +1,5 @@
+#Richness and other metrics 
+#Author: Tessa Rehill 
 #Making new variables 
 
 #We can only calculate species richness (and not diversity, because we only have presence/absence) and 
@@ -21,20 +23,20 @@ library(dplyr)
 library(here)
 
 #read in data 
-data <- read.csv(here::here("550project", "BHM_habitat.csv"),
+data <- read.csv(here::here("BIOL550","550project", "datasets", "raw_data", "BHM_habitat.csv"),
                  head=TRUE)
 
-data <- na.omit(data)
+data <- na.omit(data) #remove NA
 
-key <- read.csv(here::here("550project", "datasets",
+key <- read.csv(here::here("BIOL550","550project", "datasets", "keys",
                            "full_key_final.csv"), #from report 
                 head=TRUE)
 
-key <- na.omit(key)
+key <- na.omit(key) #remove NA
 
 #Determine species richness (number of species) per quadrat ####
-#this is just the sum of the presence/absence matrix per row
 
+#this is just the sum of the presence/absence matrix per row, isolate
 new_data <- data[c('Quadrat', 'Transect', colnames(data)[17:ncol(data)])]
 
 #make new column as key 
@@ -155,7 +157,7 @@ df <- data
 df$g_presence <- ifelse(df$AL > 0, 'y', 'n')
 
 #purple urchin presence 
-df$p_presence <- ifelse(df$PU > 0, 'y', 'n') #there doesn't exist a PU
+#df$p_presence <- ifelse(df$PU > 0, 'y', 'n') #there doesn't exist a PU, so this code won't run
 
 #red urchin presence 
 df$r_presence <- ifelse(df$RH > 0, 'y', 'n') 
@@ -172,5 +174,5 @@ colnames(data)
 
 #save data 
 write_csv(data,
-          here("550project", "datasets",
+          here("BIOL550","550project", "datasets","processed_data",
                "processed_data.csv")) 

@@ -12,10 +12,10 @@ library(dplyr)
 #Exploratory Analysis 
 
 #read in data 
-data <- read.csv(here::here("Desktop", "550project", "BHM_habitat.csv"),
+data <- read.csv(here::here("BIOL550", "550project", "datasets", "raw_data", "BHM_habitat.csv"),
                  head=TRUE)
 
-key <- read.csv(here::here("Desktop", "550project", "datasets",
+key <- read.csv(here::here("BIOL550", "550project", "datasets", "keys", 
                            "full_key_final.csv"), #from report 
                 head=TRUE)
 
@@ -52,22 +52,37 @@ data <- data %>%
   )) %>%
   select(SubCat, SubSubCat, Substrate, everything())
 
+#remove NA 
+data <- na.omit(data)
+
 #plot
 
-ggplot(data, aes(x = Substrate, fill = Substrate)) +
+plot <- ggplot(data, aes(x = Substrate, fill = Substrate)) +
   geom_bar() +
   labs(title = "Bar Plot of Substrate",
        x = "Substrate",
        y = "Count") +
   theme_minimal()
+plot
+
+#save plot
+ggsave("./outputs/exploratory/substrate_bar.png", 
+       plot = plot,
+       width = 6, height = 6, units = "in")
 
 #stacked plot
-ggplot(data, aes(x = factor(SubCat), fill = SubSubCat)) +
+plot <- ggplot(data, aes(x = factor(SubCat), fill = SubSubCat)) +
   geom_bar() +
   labs(title = "Stacked Bar Plot of Substrate",
        x = "SubCat",
        y = "Count") +
   theme_minimal()
+plot
+
+ggsave("./outputs/exploratory/subsubstrate_stackedbar.png", 
+       plot = plot,
+       width = 6, height = 6, units = "in")
+
 
 #ALGAE ####
 #select columns 17-143
@@ -95,12 +110,18 @@ sum_sp <- sum_sp[sum_sp$count != 0, ]
 algae_sp <- sum_sp[sum_sp$type == 'algae', ]
 
 #boxplot 
-ggplot(algae_sp, aes(x = phylum, y = count, fill=phylum)) +
+plot <- ggplot(algae_sp, aes(x = phylum, y = count, fill=phylum)) +
   geom_boxplot() +
   labs(title = "Boxplot of 'phylum' by 'count'",
        x = "Phylum",
        y = "Count") +
   theme_minimal()
+plot
+
+ggsave("./outputs/exploratory/algal_phylum.png", 
+       plot = plot,
+       width = 6, height = 6, units = "in")
+
 
 #INVERTS ####
 
@@ -109,12 +130,17 @@ invert_sp <- sum_sp[sum_sp$type == 'invertebrate', ]
 
 
 #boxplot 
-ggplot(invert_sp, aes(x = phylum, y = count, fill=phylum)) +
+plot <- ggplot(invert_sp, aes(x = phylum, y = count, fill=phylum)) +
   geom_boxplot() +
   labs(title = "Boxplot of 'phylum' by 'count'",
        x = "Phylum",
        y = "Count") +
   theme_minimal()
+plot 
+
+ggsave("./outputs/exploratory/invert_phylum.png", 
+       plot = plot,
+       width = 6, height = 6, units = "in")
 
 #VEGETATION ####
 
@@ -124,12 +150,17 @@ veg <- data[, c('CanopyPct', 'UnderstoryPct', 'TurfPct', 'EncrustingPct', 'Drift
 data_long <- tidyr::gather(veg, key = "Category", value = "Percentage")
 
 #boxplot
-ggplot(data_long, aes(x = Category, y = Percentage)) +
+plot <- ggplot(data_long, aes(x = Category, y = Percentage, fill=Category)) +
   geom_boxplot() +
   labs(title = "Boxplot of Percentage Cover by Vegetative Category",
        x = "Category",
        y = "Percentage") +
   theme_minimal()
+plot
+
+ggsave("./outputs/exploratory/", 
+       plot = plot,
+       width = 6, height = 6, units = "in")
 
 #Okay, now to some stats/models? 
 

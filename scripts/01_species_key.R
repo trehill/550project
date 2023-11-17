@@ -6,8 +6,8 @@
 #install.packages('here')
 #install.packages('tidyverse')
 
+setwd('/Users/tessarehill/Desktop/BIOL550/550project') #change this
 getwd()
-setwd('/Users/tessarehill/Desktop/550project')
 
 
 library(ggplot2)
@@ -21,13 +21,12 @@ library(dplyr)
 #Exploratory Analysis 
 
 #read in data 
-data <- read.csv(here::here("BHM_habitat.csv"),
+data <- read.csv(here::here("BIOL550", "550project", "datasets","raw_data","BHM_habitat.csv"),
                      head=TRUE)
 
 colnames(data)
 
 #create new df for each 'coded' letters 
-
 #select columns 17-143
 selected_columns <- data[, 17:143]
 
@@ -50,24 +49,24 @@ new_dataframe <- data.frame(Column_Names = names(selected_columns))
 
 #save this new dataframe (so we can manually create a key for each)
 write_csv(new_dataframe,
-          here("datasets",
+          here("BIOL550", "550project", "datasets", "keys",
                "key.csv")) 
 
-algae <- read.csv(here::here("datasets",
-                            "algae_key.csv"), #from report
+algae <- read.csv(here::here("BIOL550", "550project","datasets", "keys",
+                            "algae_key.csv"), #from report (manually made)
                  head=TRUE)
 
 algae <- algae[, 0:3]
 
 
-invert <- read.csv(here::here("datasets",
+invert <- read.csv(here::here("BIOL550", "550project","datasets","keys",
                              "invert_key.csv"), #from report 
                   head=TRUE)
 
 key <- rbind(algae, invert)
 
 write_csv(key,
-          here("datasets",
+          here("BIOL550", "550project","datasets","keys",
                "full_key.csv")) 
 
 #now that we have a key, let see what codes are in and are NOT in our dataset 
@@ -104,7 +103,7 @@ na_frame <- count_merged_filtered %>%
 #okay were missing 19 species codes in total 
 
 write_csv(na_frame,
-          here("datasets",
+          here("BIOL550", "550project","datasets","keys",
                "missing_key.csv")) 
 
 
