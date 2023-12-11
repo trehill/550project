@@ -6,7 +6,7 @@
 #install.packages('here')
 #install.packages('tidyverse')
 
-setwd('/Users/tessarehill/Desktop/BIOL550/550project') #change this
+setwd('/Users/tessarehill/Desktop/550project') #change this
 getwd()
 
 
@@ -21,7 +21,7 @@ library(dplyr)
 #Exploratory Analysis 
 
 #read in data 
-data <- read.csv(here::here("BIOL550", "550project", "datasets","raw_data","BHM_habitat.csv"),
+data <- read.csv(here::here("Desktop","550project","datasets","raw_data","BHM_habitat.csv"),
                      head=TRUE)
 
 colnames(data)
@@ -48,26 +48,26 @@ summary_data <- selected_columns %>%
 new_dataframe <- data.frame(Column_Names = names(selected_columns))
 
 #save this new dataframe (so we can manually create a key for each)
-write_csv(new_dataframe,
-          here("BIOL550", "550project", "datasets", "keys",
-               "key.csv")) 
+#write_csv(new_dataframe,
+#          here("BIOL550", "550project", "datasets", "keys",
+#               "key.csv")) 
 
-algae <- read.csv(here::here("BIOL550", "550project","datasets", "keys",
+algae <- read.csv(here::here("Desktop","550project","datasets", "keys",
                             "algae_key.csv"), #from report (manually made)
                  head=TRUE)
 
 algae <- algae[, 0:3]
 
 
-invert <- read.csv(here::here("BIOL550", "550project","datasets","keys",
+invert <- read.csv(here::here("Desktop","550project","datasets","keys",
                              "invert_key.csv"), #from report 
                   head=TRUE)
 
 key <- rbind(algae, invert)
 
-write_csv(key,
-          here("BIOL550", "550project","datasets","keys",
-               "full_key.csv")) 
+#write_csv(key,
+#          here("BIOL550", "550project","datasets","keys",
+#               "full_key.csv")) 
 
 #now that we have a key, let see what codes are in and are NOT in our dataset 
 # Assuming your dataframes are named 'key' and 'new_dataframe'
@@ -102,16 +102,16 @@ na_frame <- count_merged_filtered %>%
 
 #okay were missing 19 species codes in total 
 
-write_csv(na_frame,
-          here("BIOL550", "550project","datasets","keys",
-               "missing_key.csv")) 
+#write_csv(na_frame,
+#          here("BIOL550", "550project","datasets","keys",
+#               "missing_key.csv")) 
 
 
 #add to full key 
 
 #okay now we have a full key of species to species codes for all our present species! 
 
-sp_key <- read.csv(here::here("datasets",
+sp_key <- read.csv(here::here("Desktop","550project","datasets", "keys",
                              "full_key_final.csv"), #from report
                   head=TRUE)
 

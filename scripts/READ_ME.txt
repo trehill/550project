@@ -56,11 +56,24 @@ READ ME: SCRIPTS
 	outputs: 
 	"processed_data.csv" - data with additional columns (see above)
 	
-	
+04_transect.R 
+	This script aggregates the data to the Transect level (instead of quadrant). We add other information 
+	like Year, and average depth to be used as fixed + random effects later
+
+	inputs: 
+	processed_data.csv
+	BHM_RA.csv - includes year and depth data 
+
+
+	outputs: 
+	"transect.csv"
+
 04_models.R 
-	This script is currently being used for some exploratory modelling analysis 
-	Need to determine fixed vs. random effects through data structure, theory + model
-	comparisons 
+	This script is creates mixed effect models for kelp and urchins
+
+	inputs: 
+	"transect_final.csv"
+
+	outputs: 
+	plots of odd ratios for kelp + urchins
 	
-	
-	WORK IN PROGRESS

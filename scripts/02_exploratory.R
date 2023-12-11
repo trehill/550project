@@ -12,10 +12,10 @@ library(dplyr)
 #Exploratory Analysis 
 
 #read in data 
-data <- read.csv(here::here("BIOL550", "550project", "datasets", "raw_data", "BHM_habitat.csv"),
+data <- read.csv(here::here("Desktop","550project","datasets", "raw_data", "BHM_habitat.csv"),
                  head=TRUE)
 
-key <- read.csv(here::here("BIOL550", "550project", "datasets", "keys", 
+key <- read.csv(here::here("Desktop","550project","datasets", "keys", 
                            "full_key_final.csv"), #from report 
                 head=TRUE)
 
@@ -59,7 +59,7 @@ data <- na.omit(data)
 
 plot <- ggplot(data, aes(x = Substrate, fill = Substrate)) +
   geom_bar() +
-  labs(title = "Bar Plot of Substrate",
+  labs(title = "Bar Plot of Substrate per Quadrat",
        x = "Substrate",
        y = "Count") +
   theme_minimal()
@@ -112,7 +112,7 @@ algae_sp <- sum_sp[sum_sp$type == 'algae', ]
 #boxplot 
 plot <- ggplot(algae_sp, aes(x = phylum, y = count, fill=phylum)) +
   geom_boxplot() +
-  labs(title = "Boxplot of 'phylum' by 'count'",
+  labs(title = "Boxplot of Algae Phylums per Quadrat",
        x = "Phylum",
        y = "Count") +
   theme_minimal()
@@ -158,27 +158,8 @@ plot <- ggplot(data_long, aes(x = Category, y = Percentage, fill=Category)) +
   theme_minimal()
 plot
 
-ggsave("./outputs/exploratory/", 
+ggsave("./outputs/exploratory/vegetation.png", 
        plot = plot,
        width = 6, height = 6, units = "in")
 
-#Okay, now to some stats/models? 
-
-#We're gonna have to determine if we want to go at the transect or quadrat level 
-  #The transects are made up of many quadrats
-  #Let's start at the quadrat level (this way we don't have to group our data by transect yet and keep it in the 
-  #format that we already have it in )
-
-#let's first create some metrics of 'species' 
-
-#make a column that counts the number of all species 
-#make a column that counts the number of algae species in a quadrat
-#make a column that counts the number of invert species in a quadrat 
-
-#make a column that counts the number of species across each algal phylum 
-#make a column that counts the number of species across each invert phylum 
-
-
-#explore relationship between algal + invert 
-#explore relationship between all/algal/invert + substrate types
 

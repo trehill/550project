@@ -23,12 +23,12 @@ library(dplyr)
 library(here)
 
 #read in data 
-data <- read.csv(here::here("BIOL550","550project", "datasets", "raw_data", "BHM_habitat.csv"),
+data <- read.csv(here::here("Desktop","550project","datasets", "raw_data", "BHM_habitat.csv"),
                  head=TRUE)
 
 data <- na.omit(data) #remove NA
 
-key <- read.csv(here::here("BIOL550","550project", "datasets", "keys",
+key <- read.csv(here::here("Desktop","550project","datasets", "keys",
                            "full_key_final.csv"), #from report 
                 head=TRUE)
 
@@ -91,6 +91,15 @@ print(data)
 
 #Determine species richness for algal and inverts ####
 
+#we want to remove urchins from the key so that when we calculate invert richness 
+#it only includes non-urchin species 
+#remove RH - red urchins, AL -green urchins, PU - purple urchins
+new_key <- key 
+
+new_key <- new_key %>% 
+  filter(!(key %in% c('RH', 'AL', 'PU')))
+
+
 #select transect, quadrat + presence/absence matrix 
 df <- data %>%
   select(Transect, Quadrat, 19:ncol(data))
@@ -98,13 +107,13 @@ df <- data %>%
 #subset for algal 
 #filter the columns in 'df' where the corresponding 'type' in 'key' is 'algae'
 algae_columns <- df %>%
-  select(names(df)[key$type == 'algae']) #now we have only 52 columns, does this makes sense? 
+  select(names(df)[new_key$type == 'algae']) #now we have only 52 columns, does this makes sense? 
 
-count_algae_rows <- sum(key$type == 'algae') #52, nice! 
+count_algae_rows <- sum(new_key$type == 'algae') #52, nice! 
 
 #subset for inverts 
 invert_columns <- df %>%
-  select(-any_of(names(df)[key$type == 'algae']))
+  select(-any_of(names(df)[new_key$type == 'algae']))
 
 #sum values in matrix into new column 
 #algal species richness 
@@ -174,5 +183,5 @@ colnames(data)
 
 #save data 
 write_csv(data,
-          here("BIOL550","550project", "datasets","processed_data",
+          here( "Desktop","550project","datasets","processed_data",
                "processed_data.csv")) 
